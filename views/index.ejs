@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+	<script type="text/javascript" src="/javascripts/canvas_utils.js"></script>
+	<script type="text/javascript" src="/javascripts/world_node.js"></script>
+	<script type="text/javascript" src="/javascripts/world_grid.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+	<canvas id="path-view" width="400" height="400" ></canvas>
+	<script type="text/javascript"> init_canvas(document.getElementById("path-view")); </script>
+  </body>
+</html>
