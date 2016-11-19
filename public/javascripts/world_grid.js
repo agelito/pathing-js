@@ -1,6 +1,3 @@
-var global_canvas;
-var global_context;
-
 function render_grid(grid) {
 	var width = global_canvas.width;
 	var height = global_canvas.height;
@@ -42,53 +39,27 @@ function create_grid(cols, rows) {
 	return grid;
 }
 
-function set_node_at_coordinates(coordinates, grid, node_type) {
+function node_index_at_coordinates(coordinates, grid) {
 	var node_size_x = (global_canvas.width / grid.cols);
 	var node_size_y = (global_canvas.height / grid.rows);
 	var node_x = Math.floor(coordinates.x / node_size_x);
 	var node_y = Math.floor(coordinates.y / node_size_y);
 
-	if(node_x >= 0 && node_x < grid.cols &&
-		node_y >= 0 && node_y < grid.rows) {
-			grid.nodes[node_x + node_y * grid.cols] = node_type;
-		}
+	return (node_x + node_y * grid.cols);
 }
 
-function handle_input_event(grid, e) {
-	var canvas_coordinates = canvas_input_coordinate(global_canvas, e);
-
-	if(e.buttons != 0) {
-		var node_type = NODE_NONE;
-		if(e.buttons == 1) {
-			node_type = NODE_FLOOR;
-		} else if(e.buttons == 2) {
-			node_type = NODE_WALL;
-		}
-
-		if(node_type != NODE_NONE) {
-			set_node_at_coordinates(canvas_coordinates, grid, node_type);
-			render_grid(grid);
-		}
+function set_node_at_coordinates(coordinates, grid, node_type) {
+	var node_index = node_index_at_coordinates(coordinates, grid);
+	if(node_index >= 0 && node_index < (grid.cols * grid.rows)) {
+		grid.nodes[node_index] = node_type;
 	}
 }
 
-function init_canvas(canvas) {
-	global_canvas = canvas; 
-	global_context = global_canvas.getContext("2d");
-
-	global_canvas.oncontextmenu = (e) => {
-		return false;
-	};
-
-	var grid = create_grid(15, 15);
-
-	global_canvas.onmousemove = (e) => {
-		handle_input_event(grid, e);
-	};
-	global_canvas.onmousedown= (e) => {
-		handle_input_event(grid, e);
-	};
-
-	render_grid(grid);
+function get_node_at_coordinates(coordinates, grid) {
+	var node_index = node_index_at_coordinates(coordinates, grid);
+	if(node_index >= 0 && node_index < (grid.cols * grid.rows)) {
+		return grid.nodes[node_index];
+	}
+	return NODE_NONE;
 }
 
