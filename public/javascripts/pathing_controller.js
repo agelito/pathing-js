@@ -3,6 +3,23 @@ var global_context;
 var global_grid;
 var global_path = {};
 
+function find_path(start, end, grid) {
+	var pathInitBegin = performance.now();
+	var dijkstra = path_dijkstra_init(grid);
+	var pathSearchBegin = performance.now();
+	var path = path_dijkstra_search(dijkstra, start, end);
+	var pathSearchEnd = performance.now();
+
+	var pathFindTotalTime = (pathSearchEnd - pathInitBegin);
+	var pathFindInitTime = (pathSearchBegin - pathInitBegin);
+	var pathFindSearchTime = (pathSearchEnd - pathSearchBegin);
+	console.log("(" + start.x + ", " + start.y + ") -> (" + end.x + ", " + end.y + ")");
+	console.log("\tinit: " + pathFindInitTime + "ms");
+	console.log("\tsearch: " + pathFindSearchTime + "ms");
+
+	return path;
+}
+
 function handle_input_event(grid, e, buttonDown, buttonUp){
 	var canvas_coordinates = canvas_input_coordinate(global_canvas, e);
 
@@ -19,10 +36,8 @@ function handle_input_event(grid, e, buttonDown, buttonUp){
 					global_path.start = node_coordinates; 
 				} else if(!global_path.end) {
 					global_path.end = node_coordinates; 
-					var dijkstra = path_dijkstra_init(grid);
-					var path = path_dijkstra_search(dijkstra, global_path.start, global_path.end);
 
-					global_path.path = path;
+					global_path.path = find_path(global_path.start, global_path.end, global_grid); 
 					global_path.start = null;
 					global_path.end = null;
 
