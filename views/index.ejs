@@ -10,8 +10,10 @@
 	<script type="text/javascript" src="/javascripts/pathing_controller.js"></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-	<canvas id="path-view" width="400" height="400" ></canvas>
+	  <div id="menu-top"><%= title %></div>
+	  <div id="content">
+		<canvas id="path-view" width="400" height="400" ></canvas>
+	  </div>
 	<script type="text/javascript"> pathing_init(document.getElementById("path-view")); </script>
   </body>
 </html>
