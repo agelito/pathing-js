@@ -11,8 +11,16 @@
   </head>
   <body>
 	  <div id="menu-top"><%= title %></div>
+	  <div id="content-wrapper">
 	  <div id="content">
 		<canvas id="path-view" width="400" height="400" ></canvas>
+	  </div>
+	  <div id="settings">
+		  <form>
+			  <input type="radio" name="algorithm" value="dijkstra" checked>Dijkstra<br>
+			  <input type="radio" name="algorithm" value="astar">A-Star<br>
+		  </form>
+	  </div>
 	  </div>
 	<script type="text/javascript"> pathing_init(document.getElementById("path-view")); </script>
   </body>

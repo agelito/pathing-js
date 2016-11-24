@@ -1,6 +1,7 @@
-body {
+html, body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0px;
+  padding: 0px;
 }
 
 a {
@@ -14,8 +15,18 @@ a {
 	font: 32px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#content-wrapper {
+}
+
 #content {
+	float: left;
 	padding: 15px;
+}
+
+#settings {
+	border: 1px solid blue;
+	margin: 15px;
+	float: left;
 }
 
 #path-view {

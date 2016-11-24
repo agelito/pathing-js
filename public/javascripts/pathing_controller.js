@@ -58,9 +58,44 @@ function handle_input_event(grid, e, buttonDown, buttonUp){
 	}
 }
 
+function update_content_size() {
+	var contentWrapper = document.getElementById("content-wrapper");
+	var contentHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - contentWrapper.offsetTop;
+
+	contentWrapper.style.height = contentHeight + "px";
+
+	var content = document.getElementById("content");
+	content.style.height = contentHeight - 30 + "px"; 
+
+	var contentWidth = (contentWrapper.offsetWidth - 30); 
+	var canvasSize = Math.min(contentWidth, (contentHeight - 30));
+
+	content.style.width = canvasSize + "px";
+
+	var settings = document.getElementById("settings");
+	settings.style.height = contentHeight - 30 + "px"; 
+	settings.style.width = contentWidth - canvasSize - 60 + "px";
+
+	var canvas = document.getElementById("path-view");
+
+	canvas.width = canvasSize;
+	canvas.height = canvasSize;
+}
+
 function pathing_init(canvas) {
 	global_canvas = canvas; 
 	global_context = global_canvas.getContext("2d");
+
+	update_content_size();
+
+	window.onresize = (event) => {
+		update_content_size();
+		redraw_canvas();
+	};
+
+	document.onready = () => {
+		redraw_canvas();
+	};
 
 	global_canvas.oncontextmenu = (e) => {
 		return false;
