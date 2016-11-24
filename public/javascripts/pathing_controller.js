@@ -13,9 +13,11 @@ function find_path(start, end, grid) {
 	var pathFindTotalTime = (pathSearchEnd - pathInitBegin);
 	var pathFindInitTime = (pathSearchBegin - pathInitBegin);
 	var pathFindSearchTime = (pathSearchEnd - pathSearchBegin);
-	console.log("(" + start.x + ", " + start.y + ") -> (" + end.x + ", " + end.y + ")");
-	console.log("\tinit: " + pathFindInitTime + "ms");
-	console.log("\tsearch: " + pathFindSearchTime + "ms");
+
+	var statsText = "(" + start.x + ", " + start.y + ") -> (" + end.x + ", " + end.y + ")" + "<br />";
+	statsText += "\tinit: " + pathFindInitTime + "ms" + "<br />";
+	statsText += "\tsearch: " + pathFindSearchTime + "ms" + "<br />";
+	document.getElementById("path-find-stats").innerHTML = statsText;
 
 	return path;
 }
@@ -64,17 +66,19 @@ function update_content_size() {
 
 	contentWrapper.style.height = contentHeight + "px";
 
-	var content = document.getElementById("content");
-	content.style.height = contentHeight - 30 + "px"; 
+	var padding = 32;
 
-	var contentWidth = (contentWrapper.offsetWidth - 30); 
-	var canvasSize = Math.min(contentWidth, (contentHeight - 30));
+	var content = document.getElementById("content");
+	content.style.height = contentHeight - padding + "px"; 
+
+	var contentWidth = (contentWrapper.offsetWidth - padding); 
+	var canvasSize = Math.min(contentWidth, (contentHeight - padding));
 
 	content.style.width = canvasSize + "px";
 
 	var settings = document.getElementById("settings");
-	settings.style.height = contentHeight - 30 + "px"; 
-	settings.style.width = contentWidth - canvasSize - 60 + "px";
+	settings.style.height = contentHeight - padding + "px"; 
+	settings.style.width = contentWidth - canvasSize - (padding * 2) + "px";
 
 	var canvas = document.getElementById("path-view");
 

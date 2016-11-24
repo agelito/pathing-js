@@ -29,6 +29,11 @@ a {
 	float: left;
 }
 
+p.stats {
+	text-align: left;
+	padding: 5px;
+}
+
 #path-view {
 	border: 1px solid #000000;
 }

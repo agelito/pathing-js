@@ -18,8 +18,10 @@
 	  <div id="settings">
 		  <form>
 			  <input type="radio" name="algorithm" value="dijkstra" checked>Dijkstra<br>
-			  <input type="radio" name="algorithm" value="astar">A-Star<br>
+			  <input type="radio" name="algorithm" value="astar" disabled="true">A-Star<br>
 		  </form>
+
+		  <p id="path-find-stats" class="stats">Hello Stats</p>
 	  </div>
 	  </div>
 	<script type="text/javascript"> pathing_init(document.getElementById("path-view")); </script>
