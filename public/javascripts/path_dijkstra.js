@@ -31,6 +31,7 @@ function path_dijkstra_search(dijkstra, start, end) {
 	
 	var current_node_index = (start.x + start.y * dijkstra.cols);
 	var current_node = dijkstra.nodes[current_node_index];
+	if(!current_node.walkable) return [];
 
 	var final_node = dijkstra.nodes[end.x + end.y * dijkstra.cols];
 
@@ -74,26 +75,21 @@ function path_dijkstra_search(dijkstra, start, end) {
 			break;
 		}
 
+		var lowest_unvisited_index = 0;
 		var lowest_unvisited_cost = Infinity;
 		for(var ui = 0; ui < unvisited.length; ui++) {
 			var unvisited_node = dijkstra.nodes[unvisited[ui]];
 			if(unvisited_node.tentative_cost < lowest_unvisited_cost) {
 				lowest_unvisited_cost = unvisited_node.tentative_cost;
+				lowest_unvisited_index = ui
 			}
 		}
 
 		if(lowest_unvisited_cost == Infinity) {
-			break;
+			return [];
 		}
 
-		unvisited.sort((a, b) => {
-			var node_a = dijkstra.nodes[a];
-			var node_b = dijkstra.nodes[b];
-
-			return (node_a.tentative_cost - node_b.tentative_cost);
-		});
-
-		current_node_index = unvisited[0];
+		current_node_index = unvisited[lowest_unvisited_index];
 		current_node = dijkstra.nodes[current_node_index];
 	}
 

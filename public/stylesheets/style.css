@@ -37,3 +37,7 @@ p.stats {
 #path-view {
 	border: 1px solid #000000;
 }
+
+.form-button-centered {
+	text-align: center;
+}

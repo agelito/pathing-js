@@ -19,9 +19,14 @@
 		  <form>
 			  <input type="radio" name="algorithm" value="dijkstra" checked>Dijkstra<br>
 			  <input type="radio" name="algorithm" value="astar" disabled="true">A-Star<br>
+			  <br>
+			  <div class="form-button-centered">
+				<input type="button" name="clear" value="Clear" onclick="alert('not yet implemented.');">
+				<input type="button" name="benchmark" value="Benchmark" onclick="do_benchmark();">
+			  </div>
 		  </form>
 
-		  <p id="path-find-stats" class="stats">Hello Stats</p>
+		  <p id="path-find-stats" class="stats"></p>
 	  </div>
 	  </div>
 	<script type="text/javascript"> pathing_init(document.getElementById("path-view")); </script>

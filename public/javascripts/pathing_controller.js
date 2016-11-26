@@ -14,12 +14,60 @@ function find_path(start, end, grid) {
 	var pathFindInitTime = (pathSearchBegin - pathInitBegin);
 	var pathFindSearchTime = (pathSearchEnd - pathSearchBegin);
 
-	var statsText = "(" + start.x + ", " + start.y + ") -> (" + end.x + ", " + end.y + ")" + "<br />";
-	statsText += "\tinit: " + pathFindInitTime + "ms" + "<br />";
-	statsText += "\tsearch: " + pathFindSearchTime + "ms" + "<br />";
+	var statsText = "[" + start.x + ", " + start.y + "] -> [" + end.x + ", " + end.y + "]" + "<br /><br />";
+	statsText += "init path:<br /> " + pathFindInitTime + "ms" + "<br /><br />";
+	statsText += "search path:<br/> " + pathFindSearchTime + "ms" + "<br />";
 	document.getElementById("path-find-stats").innerHTML = statsText;
 
 	return path;
+}
+
+function find_path_performance_test(grid, count) {
+	var totalInitTime = 0;
+	var totalSearchTime = 0;
+	var totalTime = 0;
+
+	var totalPathLength = 0;
+
+	var pathResult = [];
+	
+	for(var i = 0; i < count; i++) {
+		var start = {x: Math.floor(Math.random() * grid.cols), y: Math.floor(Math.random() * grid.rows)};
+		var end = {x: Math.floor(Math.random() * grid.cols), y: Math.floor(Math.random() * grid.rows)};
+
+		var pathInitBegin = performance.now();
+		var dijkstra = path_dijkstra_init(grid);
+		var pathSearchBegin = performance.now();
+		var path = path_dijkstra_search(dijkstra, start, end);
+		var pathSearchEnd = performance.now();
+
+		totalPathLength += path.length;
+		pathResult = pathResult.concat(path);
+
+		var pathFindTotalTime = (pathSearchEnd - pathInitBegin);
+		var pathFindInitTime = (pathSearchBegin - pathInitBegin);
+		var pathFindSearchTime = (pathSearchEnd - pathSearchBegin);
+
+		totalInitTime += pathFindInitTime;
+		totalSearchTime += pathFindSearchTime;
+		totalTime += pathFindTotalTime;
+	}
+
+	var statsText = "[performance test<br /> (" + count + ") iterations]<br /><br />";
+	statsText += "init path:<br /> " + (totalInitTime / count) + "ms" + "<br />";
+	statsText += totalInitTime + "ms" + "<br /><br />";
+	statsText += "search path:<br/> " + (totalSearchTime / count) + "ms" + "<br />";
+	statsText += totalSearchTime + "ms" + "<br /><br />";
+	statsText += "avg path length:<br />" + (totalPathLength / count) + "<br /><br />";
+	document.getElementById("path-find-stats").innerHTML = statsText;
+	
+	return pathResult;
+}
+
+function do_benchmark() {
+	global_path.path = find_path_performance_test(global_grid, 200);
+
+	redraw_canvas();
 }
 
 function handle_input_event(grid, e, buttonDown, buttonUp){
@@ -77,8 +125,10 @@ function update_content_size() {
 	content.style.width = canvasSize + "px";
 
 	var settings = document.getElementById("settings");
-	settings.style.height = contentHeight - padding + "px"; 
-	settings.style.width = contentWidth - canvasSize - (padding * 2) + "px";
+	settings.style.height = contentHeight - padding + "px";
+	var settingsWidth = (contentWidth - canvasSize - (padding * 2));	
+	if(settingsWidth > 300) settingsWidth = 300;
+	settings.style.width =  settingsWidth + "px";
 
 	var canvas = document.getElementById("path-view");
 
@@ -105,7 +155,7 @@ function pathing_init(canvas) {
 		return false;
 	};
 
-	global_grid = grid_create(25, 25);
+	global_grid = grid_create(45, 45);
 
 	global_canvas.onmousemove = (e) => {
 		handle_input_event(global_grid, e, false, false);
