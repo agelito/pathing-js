@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="/javascripts/world_node.js"></script>
 	<script type="text/javascript" src="/javascripts/world_grid.js"></script>
 	<script type="text/javascript" src="/javascripts/path_dijkstra.js"></script>
+	<script type="text/javascript" src="/javascripts/path_astar.js"></script>
 	<script type="text/javascript" src="/javascripts/pathing_controller.js"></script>
   </head>
   <body>
@@ -16,9 +17,9 @@
 		<canvas id="path-view" width="400" height="400" ></canvas>
 	  </div>
 	  <div id="settings">
-		  <form>
-			  <input type="radio" name="algorithm" value="dijkstra" checked>Dijkstra<br>
-			  <input type="radio" name="algorithm" value="astar" disabled="true">A-Star<br>
+		  <form name="settings">
+			  <input type="radio" name="algorithm" value="dijkstra" onclick="set_pathing_algorithm(this.value);" checked>Dijkstra<br>
+			  <input type="radio" name="algorithm" value="astar" onclick="set_pathing_algorithm(this.value);">A-Star<br>
 			  <br>
 			  <div class="form-button-centered">
 				<input type="button" name="clear" value="Clear" onclick="do_clear();">

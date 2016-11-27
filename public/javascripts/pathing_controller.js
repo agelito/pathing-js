@@ -3,11 +3,14 @@ var global_context;
 var global_grid;
 var global_path = {};
 
+var global_pathfind_init = path_dijkstra_init;
+var global_pathfind_search = path_dijkstra_search;
+
 function find_path(start, end, grid) {
 	var pathInitBegin = performance.now();
-	var dijkstra = path_dijkstra_init(grid);
+	var pathfind_data = global_pathfind_init(grid);
 	var pathSearchBegin = performance.now();
-	var path = path_dijkstra_search(dijkstra, start, end);
+	var path = global_pathfind_search(pathfind_data, start, end);
 	var pathSearchEnd = performance.now();
 
 	var pathFindTotalTime = (pathSearchEnd - pathInitBegin);
@@ -36,9 +39,9 @@ function find_path_performance_test(grid, count) {
 		var end = {x: Math.floor(Math.random() * grid.cols), y: Math.floor(Math.random() * grid.rows)};
 
 		var pathInitBegin = performance.now();
-		var dijkstra = path_dijkstra_init(grid);
+		var pathfind_data = global_pathfind_init(grid);
 		var pathSearchBegin = performance.now();
-		var path = path_dijkstra_search(dijkstra, start, end);
+		var path = global_pathfind_search(pathfind_data, start, end);
 		var pathSearchEnd = performance.now();
 
 		totalPathLength += path.length;
@@ -114,6 +117,18 @@ function handle_input_event(grid, e, buttonDown, buttonUp){
 			global_path = {};
 			redraw_canvas();
 		}
+	}
+}
+
+function set_pathing_algorithm(algorithm) {
+	if(algorithm == "astar") {
+		global_pathfind_init = path_astar_init;
+		global_pathfind_search = path_astar_search;
+	} else if(algorithm == "dijkstra") {
+		global_pathfind_init = path_dijkstra_init;
+		global_pathfind_search = path_dijkstra_search;
+	} else {
+		console.log("algorithm: " + algorithm + " not supported.");
 	}
 }
 
