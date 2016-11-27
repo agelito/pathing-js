@@ -179,6 +179,13 @@ function pathing_init(canvas) {
 		return false;
 	};
 
+	var algorithm_radios = document.settings.algorithm;
+	for(var ri = 0; ri < algorithm_radios.length; ri++) {
+		if(algorithm_radios[ri].checked) {
+			set_pathing_algorithm(algorithm_radios[ri].value);
+		}
+	}
+
 	global_grid = grid_create(45, 45);
 
 	global_canvas.onmousemove = (e) => {
