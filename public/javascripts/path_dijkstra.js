@@ -14,7 +14,7 @@ function path_dijkstra_init(grid) {
 			dijkstra.nodes[node_index] = {
 				location: {x: x, y: y},
 				walkable: world_node.walkable,
-				neighbors: grid_get_neighbors({x: x, y: y}, grid), 
+				neighbors: grid_get_neighbors({x: x, y: y}, grid, true), 
 				cost_to_enter: 1,
 				tentative_cost: Infinity,
 				visited: false,
@@ -24,6 +24,11 @@ function path_dijkstra_init(grid) {
    	}
 
 	return dijkstra;
+}
+
+function path_dijkstra_distance_est(a, b) {
+	if(a.x == b.x || a.y == b.y) return 1;
+	else return 1.44;
 }
 
 function path_dijkstra_search(dijkstra, start, end) {
@@ -53,7 +58,8 @@ function path_dijkstra_search(dijkstra, start, end) {
 		for(var ni = 0; ni < current_node.neighbors.length; ni++) {
 			var neighbor = dijkstra.nodes[current_node.neighbors[ni]];
 			if(neighbor.visited == false && neighbor.walkable) {
-				var tentative_cost = (current_node.tentative_cost + neighbor.cost_to_enter);
+				var tentative_cost = (current_node.tentative_cost + neighbor.cost_to_enter + 
+					path_dijkstra_distance_est(current_node.location, neighbor.location));
 				if(tentative_cost < neighbor.tentative_cost) {
 					neighbor.tentative_cost = tentative_cost;
 					neighbor.previous = current_node_index;

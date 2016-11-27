@@ -14,7 +14,7 @@ function path_astar_init(grid) {
 			astar.nodes[node_index] = {
 				location: {x: x, y: y},
 				walkable: world_node.walkable,
-				neighbors: grid_get_neighbors({x: x, y: y}, grid), 
+				neighbors: grid_get_neighbors({x: x, y: y}, grid, true), 
 				cost_to_enter: 1,
 				tentative_cost: Infinity,
 				g_score: Infinity,
@@ -34,13 +34,18 @@ function path_astar_distance(a, b) {
 	return Math.sqrt(x * x + y * y);
 }
 
+function path_astar_distance_est(a, b) {
+	if(a.x == b.x || a.y == b.y) return 1;
+	else return 1.44;
+}
+
 function path_astar_heurestic(start, end) {
 	return ((end.x - start.x) + (end.y - start.y));
 }
 
 function path_astar_cost(node_a, node_b) {
 	var base_cost = node_b.cost_to_enter;
-	var dist_cost = path_astar_distance(node_a.location, node_b.location);
+	var dist_cost = path_astar_distance_est(node_a.location, node_b.location);
 	return base_cost + dist_cost;
 }
 

@@ -101,13 +101,40 @@ function grid_get_node(coordinates, grid) {
 	return NODE_NONE;
 }
 
-function grid_get_neighbors(node_xy, grid) {
+function grid_get_neighbors(node_xy, grid, diagonal) {
 	var neighbors = [];
 	var node_index = (node_xy.x + node_xy.y * grid.cols);
-	if(node_xy.x > 0) neighbors.push(node_index - 1);
-	if(node_xy.x < grid.cols - 1) neighbors.push(node_index + 1);
-	if(node_xy.y > 0) neighbors.push(node_index - grid.cols);
-	if(node_xy.y < grid.rows - 1) neighbors.push(node_index + grid.cols);
+
+	var not_first_row = (node_xy.y > 0);
+	var not_last_row = (node_xy.y < grid.rows - 1); 
+	var not_first_col = (node_xy.x > 0);
+	var not_last_col = (node_xy.x < grid.cols - 1);
+
+
+	if(diagonal) {
+		var north_open = (not_first_row && get_node(grid.nodes[node_index - grid.cols]).walkable);
+		var south_open = (not_last_row && get_node(grid.nodes[node_index + grid.cols]).walkable);
+		var east_open = (not_last_col && get_node(grid.nodes[node_index + 1]).walkable);
+		var west_open = (not_first_col && get_node(grid.nodes[node_index - 1]).walkable);
+
+		if(west_open) { 
+			neighbors.push(node_index - 1);
+			if(not_first_row && north_open) neighbors.push(node_index - (grid.cols + 1));
+			if(not_last_row && south_open) neighbors.push(node_index + (grid.cols - 1));
+		}
+		if(east_open) {
+			neighbors.push(node_index + 1);
+			if(not_first_row && north_open) neighbors.push(node_index - (grid.cols - 1));
+			if(not_last_row && south_open) neighbors.push(node_index + (grid.cols + 1));
+		}
+		if(not_first_row) neighbors.push(node_index - grid.cols);
+		if(not_last_row) neighbors.push(node_index + grid.cols);
+	} else {
+		if(not_first_col) neighbors.push(node_index - 1);
+		if(not_last_col) neighbors.push(node_index + 1);
+		if(not_first_row) neighbors.push(node_index - grid.cols);
+		if(not_last_row) neighbors.push(node_index + grid.cols);
+	}
 
 	return neighbors;
 }
