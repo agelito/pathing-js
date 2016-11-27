@@ -86,6 +86,13 @@ function grid_set_node(coordinates, grid, node_type) {
 	}
 }
 
+function grid_set_all_nodes(grid, node_type) {
+	var node_count = grid.cols * grid.rows;
+	for(var node_index = 0; node_index < node_count; node_index++) {
+		grid.nodes[node_index] = node_type;
+	}
+}
+
 function grid_get_node(coordinates, grid) {
 	var node_index = grid_node_index(coordinates, grid);
 	if(node_index >= 0 && node_index < (grid.cols * grid.rows)) {

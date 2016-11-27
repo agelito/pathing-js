@@ -70,6 +70,15 @@ function do_benchmark() {
 	redraw_canvas();
 }
 
+function do_clear() {
+	grid_set_all_nodes(global_grid, NODE_FLOOR);
+	global_path.path = [];
+	global_path.start = null; 
+	global_path.end = null;
+	
+	redraw_canvas();	
+}
+
 function handle_input_event(grid, e, buttonDown, buttonUp){
 	var canvas_coordinates = canvas_input_coordinate(global_canvas, e);
 
